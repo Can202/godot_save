@@ -16,7 +16,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Screenshotqueue="*res://screenshotqueue.gd"
-Savedata="*res://savedata/savedata.gd"
+Save="*res://save/save.gd"
 
 [editor_plugins]
 

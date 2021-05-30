@@ -4,14 +4,25 @@ extends Node
 
 
 #Modify
+
 var data_in_folder = false      # true changes "user://" to "res://"
 var folder_name = "save"        # Folder name
 var print_in_terminal = true    # if it changes to false, this script will not print
 
-var screenshot_folder_name = "screenshots"  # Folder name
 var screenshot_in_folder = false            # true changes "user://" to "res://"
+var screenshot_folder_name = "screenshots"  # Folder name
+var screenshot_print_in_terminal = true     # if it changes to false, this script will not print
 
 #End
+
+
+
+
+
+
+
+
+
 
 var res_user = "user://"
 var S_res_user = "user://"
@@ -78,7 +89,7 @@ func edit_data(var profile : String = ""):
 
 
 
-#This is modified by my, but the author is fractilegames
+#This is modified by me (Can202), but the author is fractilegames
 #GitHub: https://github.com/fractilegames/godot-screenshot-queue
 
 #ScreenshotQueue.screenshot_snap(get_viewport())
@@ -96,12 +107,14 @@ func _exit_tree():
 
 func screenshot_snap(var viewport : Viewport):
 	
+	_create_screenshots_folder()
+	
 	var dt = OS.get_datetime()
 	var timestamp = "%04d%02d%02d%02d%02d%02d" % [dt["year"], dt["month"], dt["day"], dt["hour"], dt["minute"], dt["second"]]
 	
 	var image = viewport.get_texture().get_data()
 	
-	screenshot_save(image, S_res_user + "screenshot-" + timestamp + ".png")
+	screenshot_save(image, S_res_user + screenshot_folder_name +"/screenshot-" + timestamp + ".png")
 
 
 func screenshot_save(var image : Image, path : String):
@@ -111,7 +124,8 @@ func screenshot_save(var image : Image, path : String):
 	if queue.size() < MAX_QUEUE_LENGTH:
 		queue.push_back({"image" : image, "path" : path})
 	else:
-		print("Screenshot queue overflow")
+		if screenshot_print_in_terminal:
+			print("Screenshot queue overflow")
 	
 	if queue.size() == 1:
 		if thread.is_active():
@@ -128,7 +142,8 @@ func worker_function(_userdata):
 		var item = queue.front()
 		mutex.unlock()
 		
-		print("Saving screenshot to " + item["path"])
+		if screenshot_print_in_terminal:
+			print("Saving screenshot to " + item["path"])
 		
 		item["image"].flip_y()
 		item["image"].save_png(item["path"])
@@ -138,3 +153,11 @@ func worker_function(_userdata):
 	
 	mutex.unlock()
 
+
+func _create_screenshots_folder():
+	var path = Directory.new()
+	if !path.dir_exists(S_res_user + screenshot_folder_name):
+		path.open(S_res_user)
+		path.make_dir(S_res_user + screenshot_folder_name)
+		if print_in_terminal:
+			print("making screenshots directory")
