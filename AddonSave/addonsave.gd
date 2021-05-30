@@ -5,11 +5,11 @@ extends Node
 
 #Modify
 
-var data_in_folder = false      # true changes "user://" to "res://"
+var data_in_folder = true      # true changes "user://" to "res://"
 var folder_name = "save"        # Folder name
 var print_in_terminal = true    # if it changes to false, this script will not print
 
-var screenshot_in_folder = false            # true changes "user://" to "res://"
+var screenshot_in_folder = true            # true changes "user://" to "res://"
 var screenshot_folder_name = "screenshots"  # Folder name
 var screenshot_print_in_terminal = true     # if it changes to false, this script will not print
 

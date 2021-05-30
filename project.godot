@@ -15,8 +15,12 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Screenshotqueue="*res://screenshotqueue.gd"
-Save="*res://save/save.gd"
+Addonsave="*res://AddonSave/addonsave.gd"
+
+[display]
+
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
 
 [editor_plugins]
 
