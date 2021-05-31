@@ -64,22 +64,23 @@ func save_data(var data : Dictionary, var profile : String = "save", var typefil
 	thefile.close()
 	
 	if print_in_terminal:
-		print("Saved:")
-		print(str(data))
+		print("Saved: " + str(data))
 
 func edit_data(var profile : String = "save", var typefile : String = ".sav"):
 	
 	create_folder(res_user, folder_name)
 	
+	
 	var thefile = File.new()
 	var data = {}
 	if profile == "":
 		profile = "save"
-	if (!thefile.file_exists(res_user + folder_name + "/" + profile + typefile)):
+	var path = str(res_user + folder_name + "/" + profile + typefile)
+	if (!thefile.file_exists(path)):
 		if print_in_terminal:
 			print("the file doesn't exist yet, return empty dictionary")
 	else:
-		thefile.open(res_user + folder_name + "/" + profile + typefile, File.READ)
+		thefile.open(path, File.READ)
 		if !thefile.eof_reached():
 			var almost_data = parse_json(thefile.get_line())
 			if almost_data != null:
@@ -99,8 +100,7 @@ func save_data_in_folder(var data : Dictionary, var resuser : String, var folder
 	thefile.close()
 	
 	if print_in_terminal:
-		print("Saved:")
-		print(str(data))
+		print("Saved: " + str(data))
 
 func edit_data_in_folder(var resuser : String, var folder : String, var profile : String = "save", var typefile : String = ".sav"):
 	
@@ -110,18 +110,30 @@ func edit_data_in_folder(var resuser : String, var folder : String, var profile 
 	var data = {}
 	if profile == "":
 		profile = "save"
-	if (!thefile.file_exists(res_user + folder_name + "/" + profile + typefile)):
+	var path = str(resuser + folder + "/" + profile + typefile)
+	if (!thefile.file_exists(path)):
 		if print_in_terminal:
 			print("the file doesn't exist yet, return empty dictionary")
 	else:
-		thefile.open(resuser + folder + "/" + profile + typefile, File.READ)
+		thefile.open(path, File.READ)
 		if !thefile.eof_reached():
 			var almost_data = parse_json(thefile.get_line())
 			if almost_data != null:
 				data = almost_data
 	return data
 
-
+func remove_data(var profile : String = "save", var typefile : String = ".sav"):
+	var dir = Directory.new()
+	var path = str(res_user + folder_name + "/" + profile + typefile)
+	dir.remove(path)
+	if print_in_terminal:
+		print(path + " removed")
+func remove_data_in_folder(var resuser : String, var folder : String, var profile : String = "save", var typefile : String = ".sav"):
+	var dir = Directory.new()
+	var path = str(resuser + folder + "/" + profile + typefile)
+	dir.remove(path)
+	if print_in_terminal:
+		print(path + " removed")
 
 #This is modified by me (Can202), but the author is fractilegames
 #GitHub: https://github.com/fractilegames/godot-screenshot-queue

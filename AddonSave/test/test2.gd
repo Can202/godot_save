@@ -37,3 +37,7 @@ func _load():
 
 func _on_save_pressed():
 	_save()
+
+
+func _on_Button_pressed():
+	Addonsave.remove_data_in_folder("res://", "settings", "quality", ".txt")

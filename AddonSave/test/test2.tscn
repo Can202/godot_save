@@ -37,4 +37,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Button" type="Button" parent="Node2D"]
+margin_left = 204.0
+margin_top = 268.0
+margin_right = 339.0
+margin_bottom = 288.0
+text = "reset configuration"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="pressed" from="Node2D/save" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="Node2D/Button" to="." method="_on_Button_pressed"]
