@@ -43,22 +43,22 @@ func _ready():
 	mutex = Mutex.new()
 		
 
-func create_folder():
+func create_folder(var resuser : String, var folder : String):
 	var path = Directory.new()
-	if !path.dir_exists(res_user + folder_name):
-		path.open(res_user)
-		path.make_dir(res_user + folder_name)
+	if !path.dir_exists(resuser + folder):
+		path.open(resuser)
+		path.make_dir(resuser + folder)
 		if print_in_terminal:
-			print("making directory")
+			print("making " + resuser + folder + " directory")
 
-func save_data(var data : Dictionary, var profile : String = ""):
+func save_data(var data : Dictionary, var profile : String = "save", var typefile : String = ".sav"):
 	
-	create_folder()
+	create_folder(res_user, folder_name)
 	
 	if profile == "":
 		profile = "save"
 	var thefile = File.new()
-	thefile.open(res_user + folder_name + "/" + profile + ".sav", File.WRITE)
+	thefile.open(res_user + folder_name + "/" + profile + typefile, File.WRITE)
 	
 	thefile.store_line(to_json(data))
 	thefile.close()
@@ -67,25 +67,59 @@ func save_data(var data : Dictionary, var profile : String = ""):
 		print("Saved:")
 		print(str(data))
 
-func edit_data(var profile : String = ""):
+func edit_data(var profile : String = "save", var typefile : String = ".sav"):
 	
-	create_folder()
+	create_folder(res_user, folder_name)
 	
 	var thefile = File.new()
 	var data = {}
 	if profile == "":
 		profile = "save"
-	if (!thefile.file_exists(res_user + folder_name + "/" + profile + ".sav")):
+	if (!thefile.file_exists(res_user + folder_name + "/" + profile + typefile)):
 		if print_in_terminal:
 			print("the file doesn't exist yet, return empty dictionary")
 	else:
-		thefile.open(res_user + folder_name + "/" + profile + ".sav", File.READ)
+		thefile.open(res_user + folder_name + "/" + profile + typefile, File.READ)
 		if !thefile.eof_reached():
 			var almost_data = parse_json(thefile.get_line())
 			if almost_data != null:
 				data = almost_data
 	return data
 	
+func save_data_in_folder(var data : Dictionary, var resuser : String, var folder : String, var profile : String = "save", var typefile : String = ".sav"):
+	
+	create_folder(resuser, folder)
+	
+	if profile == "":
+		profile = "save"
+	var thefile = File.new()
+	thefile.open(res_user + folder_name + "/" + profile + typefile, File.WRITE)
+	
+	thefile.store_line(to_json(data))
+	thefile.close()
+	
+	if print_in_terminal:
+		print("Saved:")
+		print(str(data))
+
+func edit_data_in_folder(var resuser : String, var folder : String, var profile : String = "save", var typefile : String = ".sav"):
+	
+	create_folder(resuser, folder)
+	
+	var thefile = File.new()
+	var data = {}
+	if profile == "":
+		profile = "save"
+	if (!thefile.file_exists(res_user + folder_name + "/" + profile + typefile)):
+		if print_in_terminal:
+			print("the file doesn't exist yet, return empty dictionary")
+	else:
+		thefile.open(res_user + folder_name + "/" + profile + typefile, File.READ)
+		if !thefile.eof_reached():
+			var almost_data = parse_json(thefile.get_line())
+			if almost_data != null:
+				data = almost_data
+	return data
 
 
 
@@ -107,7 +141,7 @@ func _exit_tree():
 
 func screenshot_snap(var viewport : Viewport):
 	
-	_create_screenshots_folder()
+	create_folder(S_res_user, screenshot_folder_name)
 	
 	var dt = OS.get_datetime()
 	var timestamp = "%04d%02d%02d%02d%02d%02d" % [dt["year"], dt["month"], dt["day"], dt["hour"], dt["minute"], dt["second"]]
@@ -153,11 +187,3 @@ func worker_function(_userdata):
 	
 	mutex.unlock()
 
-
-func _create_screenshots_folder():
-	var path = Directory.new()
-	if !path.dir_exists(S_res_user + screenshot_folder_name):
-		path.open(S_res_user)
-		path.make_dir(S_res_user + screenshot_folder_name)
-		if print_in_terminal:
-			print("making screenshots directory")
