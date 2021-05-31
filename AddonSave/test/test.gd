@@ -26,28 +26,32 @@ func _on_screenshot_pressed():
 func _save():
 	
 	#get data
-	var data = Addonsave.edit_data("position")
+	var data = Addonsave.edit_data("save") #name can be "save, "settings", "ingame", "other", etc.
 	
 	#save information in data
 	data.positionx = $player.position.x
+	data.positiony = $player.position.y
 	
 	
 	#save data
-	Addonsave.save_data(data, "position")
+	Addonsave.save_data(data, "save")
 func _load():
 	
 	#get data
-	var data = Addonsave.edit_data("position")
+	var data = Addonsave.edit_data("save")
 	
 	#Verify if the data is null, if it's null, give it a value
 	if !data.has("positionx"):
 		data.positionx = 480
+	if !data.has("positiony"):
+		data.positiony = 304
 	
 	#put the data information on variables
 	$player.position.x = data.positionx
+	$player.position.y = data.positiony
 	
 	#save data, cause maybe the data was modified
-	Addonsave.save_data(data, "position")
+	Addonsave.save_data(data, "save")
 
 func _on_save_pressed():
 	_save()
