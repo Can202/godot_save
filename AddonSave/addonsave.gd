@@ -93,7 +93,7 @@ func save_data_in_folder(var data : Dictionary, var resuser : String, var folder
 	if profile == "":
 		profile = "save"
 	var thefile = File.new()
-	thefile.open(res_user + folder_name + "/" + profile + typefile, File.WRITE)
+	thefile.open(resuser + folder + "/" + profile + typefile, File.WRITE)
 	
 	thefile.store_line(to_json(data))
 	thefile.close()
@@ -114,7 +114,7 @@ func edit_data_in_folder(var resuser : String, var folder : String, var profile 
 		if print_in_terminal:
 			print("the file doesn't exist yet, return empty dictionary")
 	else:
-		thefile.open(res_user + folder_name + "/" + profile + typefile, File.READ)
+		thefile.open(resuser + folder + "/" + profile + typefile, File.READ)
 		if !thefile.eof_reached():
 			var almost_data = parse_json(thefile.get_line())
 			if almost_data != null:
