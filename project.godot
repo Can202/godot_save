@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="Save Gdscript"
-config/icon="res://icon.png"
+config/icon="res://AddonSave/icon.png"
 
 [autoload]
 
